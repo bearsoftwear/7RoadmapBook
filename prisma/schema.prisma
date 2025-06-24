@@ -38,6 +38,7 @@ model Genre {
 model Book {
   id          Int          @id @default(autoincrement())
   title       String
+  ISBN        String       @default("0000000000000")
   description String?
   publishedAt DateTime?
   authorId    Int
