@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
+  name      String?
+  books     BookLog[]
+  reviews   Review[]
+  createdAt DateTime   @default(now())
+}
+
+model Author {
+  id    Int     @id @default(autoincrement())
+  name  String
+  books Book[]
+}
+
+model Genre {
+  id    Int     @id @default(autoincrement())
+  name  String  @unique
+  books BookGenre[]
+}
+
+model Book {
+  id          Int          @id @default(autoincrement())
+  title       String
+  description String?
+  publishedAt DateTime?
+  authorId    Int
+  author      Author       @relation(fields: [authorId], references: [id])
+  genres      BookGenre[]
+  logs        BookLog[]
+  reviews     Review[]
+}
+
+model BookGenre {
+  bookId Int
+  genreId Int
+  book   Book   @relation(fields: [bookId], references: [id])
+  genre  Genre  @relation(fields: [genreId], references: [id])
+  @@id([bookId, genreId])
+}
+
+model BookLog {
+  id         Int       @id @default(autoincrement())
+  userId     Int
+  bookId     Int
+  status     ReadingStatus @default(TO_READ)
+  startedAt  DateTime?
+  finishedAt DateTime?
+  user       User      @relation(fields: [userId], references: [id])
+  book       Book      @relation(fields: [bookId], references: [id])
+  notes      String?
+}
+
+model Review {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  bookId    Int
+  rating    Int       // e.g. 1–5 stars
+  comment   String?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id])
+  book      Book      @relation(fields: [bookId], references: [id])
+}
+
+enum ReadingStatus {
+  TO_READ
+  READING
+  COMPLETED
+  ABANDONED
+}
