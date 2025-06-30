@@ -8,9 +8,9 @@ export async function GET() {
         id: true,
         title: true,
         ISBN: true,
-        description: true,
+        // description: true,
         publishedAt: true,
-        author: { select: { name: true } },
+        author: { select: { id: true, name: true } },
         reviews: { select: { rating: true } },
       },
     });

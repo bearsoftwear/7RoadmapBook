@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import BookCard from '@/components/BookCard';
 import BookDetail from '@/components/BookDetail';
 import { Loader2Icon } from 'lucide-react';
+import AuthorDetail from '@/components/AuthorDetail';
 
 export default function BookList() {
   const [books, setBooks] = useState([]);
@@ -35,15 +36,18 @@ export default function BookList() {
 
   if (selectedBook) {
     return (
-      //   <>BookDetail</>
-      <BookDetail id={selectedBook} onBack={() => setSelectedBook(null)} />
+      <>BookDetail</>
+      // <BookDetail id={selectedBook} onBack={() => setSelectedBook(null)} />
     );
   }
 
   if (selectedAuthor) {
     return (
-      <>Author</>
-      //   <Author author={selectedAuthor} onBack={() => setSelectedAuthor(null)} />
+      // <>{console.log(selectedAuthor.author.id)} Author</>
+      <AuthorDetail
+        id={selectedAuthor.author.id}
+        onBack={() => setSelectedAuthor(null)}
+      />
     );
   }
 

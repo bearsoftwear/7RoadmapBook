@@ -21,7 +21,7 @@ export default function BookCard({ book, onClickDetail, onClickAuthor }) {
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
         <div className="flex items-center mb-4">
           <Image
-            src={`https://covers.openlibrary.org/b/isbn/${book.ISBN}-S.jpg`}
+            src={`https://covers.openlibrary.org/b/isbn/${book.ISBN}-M.jpg`}
             alt="Book Cover"
             className="w-16 h-24 rounded-md mr-4"
             width="16"
@@ -29,9 +29,14 @@ export default function BookCard({ book, onClickDetail, onClickAuthor }) {
           />
           <div>
             <h2 className="text-lg font-semibold">{book.title}</h2>
-            <Button onClick={onClickAuthor} variant="link" className="cursor-pointer text-gray-500 dark:text-gray-400 p-0">
+            <Button
+              onClick={onClickAuthor}
+              variant="link"
+              className="cursor-pointer text-gray-500 dark:text-gray-400 p-0 h-0"
+            >
               {book.author.name}
             </Button>
+            <p className='text-gray-500 dark:text-gray-400 text-sm'>{new Date(book.publishedAt).getFullYear()}</p>
           </div>
         </div>
         <div className="flex items-center justify-between">
