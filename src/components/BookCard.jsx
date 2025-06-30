@@ -1,74 +1,77 @@
-'use client'
+'use client';
 
 import React from 'react';
 import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-    CardDescription,
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  CardDescription,
 } from '@/components/ui/card';
-import {Badge} from '@/components/ui/badge';
-import {Star} from 'lucide-react';
-import {Button} from '@/components/ui/button';
-import Link from "next/link";
-import Image from "next/image";
+import { Badge } from '@/components/ui/badge';
+import { Star } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import Image from 'next/image';
 
-export default function BookCard({book, onClick}) {
-    console.log(book);
-    return (
-        <>
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4" onClick={onClick}>
-                <div className="flex items-center mb-4">
-                    <Image
-                        src={`https://covers.openlibrary.org/b/isbn/${book.ISBN}-S.jpg`}
-                        alt="Book Cover"
-                        className="w-16 h-24 rounded-md mr-4"
-                        width="16"
-                        height="24"
-                    />
-                    <div>
-                        <h2 className="text-lg font-semibold">{book.title}</h2>
-                        <p className="text-gray-500 dark:text-gray-400">
-                            {book.author.name}
-                        </p>
-                    </div>
-                </div>
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-1">
-                        {[...Array(5)].map((_, i) => (
-                            <Star
-                                key={i}
-                                className="w-4 h-4"
-                                // Fill primary if i < avgRating, else muted
-                                fill={
-                                    i < Math.round(book.avgRating || 0) ? 'currentColor' : 'none'
-                                }
-                                stroke={
-                                    i < Math.round(book.avgRating || 0)
-                                        ? 'var(--primary)'
-                                        : 'var(--muted-foreground)'
-                                }
-                                style={{
-                                    color:
-                                        i < Math.round(book.avgRating || 0)
-                                            ? 'var(--primary)'
-                                            : 'var(--muted-foreground)',
-                                }}
-                            />
-                        ))}
-                        {book.avgRating && (
-                            <span className="ml-1">{book.avgRating.toFixed(1)}</span>
-                        )}
-                    </div>
-                    <Button type="button" className="inline-flex h-8 items-center justify-center rounded-md bg-gray-900 px-4 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300">
-                        Read More
-                    </Button>
-                </div>
-            </div>
+export default function BookCard({ book, onClickDetail, onClickAuthor }) {
+  return (
+    <>
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
+        <div className="flex items-center mb-4">
+          <Image
+            src={`https://covers.openlibrary.org/b/isbn/${book.ISBN}-S.jpg`}
+            alt="Book Cover"
+            className="w-16 h-24 rounded-md mr-4"
+            width="16"
+            height="24"
+          />
+          <div>
+            <h2 className="text-lg font-semibold">{book.title}</h2>
+            <Button onClick={onClickAuthor} variant="link" className="cursor-pointer text-gray-500 dark:text-gray-400 p-0">
+              {book.author.name}
+            </Button>
+          </div>
+        </div>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-1">
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                className="w-4 h-4"
+                // Fill primary if i < avgRating, else muted
+                fill={
+                  i < Math.round(book.avgRating || 0) ? 'currentColor' : 'none'
+                }
+                stroke={
+                  i < Math.round(book.avgRating || 0)
+                    ? 'var(--primary)'
+                    : 'var(--muted-foreground)'
+                }
+                style={{
+                  color:
+                    i < Math.round(book.avgRating || 0)
+                      ? 'var(--primary)'
+                      : 'var(--muted-foreground)',
+                }}
+              />
+            ))}
+            {book.avgRating && (
+              <span className="ml-1">{book.avgRating.toFixed(1)}</span>
+            )}
+          </div>
+          <Button
+            type="button"
+            onClick={onClickDetail}
+            className="cursor-pointer inline-flex h-8 items-center justify-center rounded-md bg-gray-900 px-4 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
+          >
+            Read More
+          </Button>
+        </div>
+      </div>
 
-            {/* <Card>
+      {/* <Card>
         <img
           src="/placeholder.svg"
           width={300}
@@ -85,7 +88,7 @@ export default function BookCard({book, onClick}) {
         </CardContent>
       </Card> */}
 
-            {/* <Card className="w-full max-w-sm rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+      {/* <Card className="w-full max-w-sm rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow">
         <div className="w-full h-56 bg-muted/30 overflow-hidden">
           <img
             src="/placeholder.svg"
@@ -127,6 +130,6 @@ export default function BookCard({book, onClick}) {
           )}
         </CardFooter>
       </Card> */}
-        </>
-    );
+    </>
+  );
 }
