@@ -36,8 +36,8 @@ export default function BookList() {
 
   if (selectedBook) {
     return (
-      <>BookDetail</>
-      // <BookDetail id={selectedBook} onBack={() => setSelectedBook(null)} />
+      // <>BookDetail</>
+      <BookDetail id={selectedBook} onBack={() => setSelectedBook(null)} />
     );
   }
 

@@ -2,13 +2,15 @@ import prisma from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 
 export async function GET(request, { params }) {
-  const { id } = params;
+  const { id } = await params;
+
   if (!id) {
     return NextResponse.json(
       { error: 'Author ID is required' },
       { status: 400 }
     );
   }
+
   try {
     const author = await prisma.author.findUnique({
       where: { id: parseInt(id) },
@@ -22,7 +24,11 @@ export async function GET(request, { params }) {
             ISBN: true,
             description: true,
             publishedAt: true,
-            reviews: { select: { rating: true } },
+            reviews: {
+              select: {
+                rating: true,
+              },
+            },
           },
         },
       },
@@ -38,7 +44,6 @@ export async function GET(request, { params }) {
       ISBN: book.ISBN,
       description: book.description,
       publishedAt: book.publishedAt,
-      author: book.author,
       avgRating:
         book.reviews.length > 0
           ? book.reviews.reduce((sum, review) => sum + review.rating, 0) /
@@ -46,6 +51,7 @@ export async function GET(request, { params }) {
           : null,
     }));
 
+    console.log(author.books.reviews);
     author.books = authorsBooksWithAvgRating;
 
     return NextResponse.json(author);

@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { ArrowLeft, Calendar, User, Tag } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { Star } from 'lucide-react';
 
 export default function BookDetail({ id, onBack }) {
   const [book, setBook] = useState({});
@@ -42,7 +43,7 @@ export default function BookDetail({ id, onBack }) {
         <div className="w-full lg:w-1/2">
           <Image
             src={`https://covers.openlibrary.org/b/isbn/${book.ISBN}-L.jpg`}
-            alt={book.title}
+            alt={`Cover of ${book.title}`}
             className="object-cover w-full rounded-lg"
             width="500"
             height="500"
@@ -54,15 +55,35 @@ export default function BookDetail({ id, onBack }) {
             <CardContent className="p-4">
               <h2 className="text-2xl font-bold mb-2">{book.title}</h2>
               <h3 className="text-lg text-gray-600 mb-2">
-                by {book.author.name}
+                {/* by {book.author.name} */}
               </h3>
               <div className="flex items-center mb-2">
-                <StarIcon className="w-4 h-4 mr-1" />
-                <StarIcon className="w-4 h-4 mr-1" />
-                <StarIcon className="w-4 h-4 mr-1" />
-                <StarIcon className="w-4 h-4 mr-1" />
-                <StarIcon className="w-4 h-4" />
-                <p className="text-gray-700 ml-2">(1234 ratings)</p>
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className="w-4 h-4"
+                    // Fill primary if i < avgRating, else muted
+                    fill={
+                      i < Math.round(book.avgRating || 0)
+                        ? 'currentColor'
+                        : 'none'
+                    }
+                    stroke={
+                      i < Math.round(book.avgRating || 0)
+                        ? 'var(--primary)'
+                        : 'var(--muted-foreground)'
+                    }
+                    style={{
+                      color:
+                        i < Math.round(book.avgRating || 0)
+                          ? 'var(--primary)'
+                          : 'var(--muted-foreground)',
+                    }}
+                  />
+                ))}
+                {book.avgRating && (
+                  <span className="ml-1">{book.avgRating.toFixed(1)}</span>
+                )}
               </div>
               <p className="text-gray-700 mb-4">{book.description}</p>
               <div className="mb-4">
@@ -173,14 +194,14 @@ export default function BookDetail({ id, onBack }) {
                 {book.title}
               </h1>
 
-              {book.author_name && book.author_name.length > 0 && (
+              {/* {book.author_name && book.author_name.length > 0 && (
                 <div className="flex items-center mb-3">
                   <User className="w-5 h-5 text-gray-400 mr-2" />
                   <span className="text-lg text-gray-700">
                     by {book.author_name.join(', ')}
                   </span>
                 </div>
-              )}
+              )} */}
 
               {book.first_publish_year && (
                 <div className="flex items-center mb-4">
