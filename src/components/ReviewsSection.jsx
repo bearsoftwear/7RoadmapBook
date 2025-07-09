@@ -41,6 +41,15 @@ export default function ReviewsSection({book, onUpdateReviews}) {
         })
     }
 
+    //Delete Review
+    const deleteReview = async (id) => {
+        await fetch('/api/books', {
+            method: 'DELETE',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({id}),
+        })
+    }
+
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString("en-US", {
             year: "numeric",
@@ -80,6 +89,7 @@ export default function ReviewsSection({book, onUpdateReviews}) {
 
     const handleDeleteReview = (index) => {
         const updatedReviews = reviews.filter((_, i) => i !== index)
+        deleteReview(reviews[index].id)
         setReviews(updatedReviews)
         onUpdateReviews(updatedReviews)
     }
